@@ -6,7 +6,7 @@ import java.awt.event.*;
 
 @SuppressWarnings("serial")
 
-public class MouseTest extends Applet implements ActionListener {
+public class RedTest extends Applet implements ActionListener {
 
     CircleCanvas c;
     Button centerButton, colorButton;
