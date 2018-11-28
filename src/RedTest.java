@@ -8,17 +8,19 @@ import java.awt.event.*;
 
 public class RedTest extends Applet implements ActionListener {
 
-    CircleCanvas c;
-    Button restartButton;
-    Label titleLabel, scoreLabel;
+    protected CircleCanvas c;
+    protected Button restartButton;
+    protected Label titleLabel, scoreLabel;
+    protected int currentScore;
     
     static final Color dgreen = new Color(0, 120, 90);
     
     public void init () {
+    	currentScore = 0;
         setLayout(new BorderLayout());
         add("North", makeTopControlPanel());
         c = new CircleCanvas();
-        c.setBackground(Color.yellow);
+        c.setBackground(Color.lightGray);
         c.addMouseListener(c);
         c.addMouseMotionListener(c);
         add("Center", c);
@@ -32,23 +34,45 @@ public class RedTest extends Applet implements ActionListener {
     public Panel makeTopControlPanel() {
     	Panel topControlPanel = new Panel();
     	topControlPanel.setLayout(new GridLayout(1, 3));
-    	restartButton = new Button("Restart");
-        restartButton.setBackground(dgreen);
-        restartButton.addActionListener(this);
-        titleLabel = new Label("Red Dead Redeption 3");
-        titleLabel.setAlignment(Label.CENTER);
-        titleLabel.setBackground(dgreen);
-        titleLabel.setForeground(Color.white);
-        scoreLabel = new Label("Score: ");
-        scoreLabel.setAlignment(Label.CENTER);
-        scoreLabel.setBackground(dgreen);;
-        scoreLabel.setForeground(Color.white);
+    	
+    	restartButton = makeRestartButton();
+    	
+        titleLabel = makeTitleLabel();
+       
+        scoreLabel = makeScoreLabel();
+        scoreLabel.setFont(new Font("Helvetica", Font.PLAIN, 16));
         topControlPanel.setBackground(dgreen);
+       
         topControlPanel.add(scoreLabel);
+        
         topControlPanel.add(titleLabel);
+        
         topControlPanel.add(restartButton);
         return topControlPanel;
-    	
+    }
+    
+    public Label makeTitleLabel() {
+    	titleLabel = new Label("Red Dead Redeption 3");
+    	titleLabel.setFont(new Font("Helvetica", Font.BOLD, 16));
+        titleLabel.setAlignment(Label.CENTER);
+        titleLabel.setForeground(Color.white);
+    	return titleLabel;
+    }
+    
+    public Label makeScoreLabel() {
+    	scoreLabel = new Label("Score: " + Integer.toString(currentScore));
+    	scoreLabel.setFont(new Font("Helvetica", Font.PLAIN, 16));
+        scoreLabel.setAlignment(Label.CENTER);
+        scoreLabel.setForeground(Color.white);
+        return scoreLabel;
+    }
+    
+    public Button makeRestartButton() {
+    	restartButton = new Button("Restart");
+    	restartButton.setFont(new Font("Helvetica", Font.PLAIN, 16));
+        restartButton.addActionListener(this);
+        restartButton.setForeground(dgreen);
+        return restartButton;
     }
 }
 
