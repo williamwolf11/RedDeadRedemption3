@@ -4,7 +4,7 @@ import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({ "serial", "deprecation" })
 
 public class RedTest extends Applet implements ActionListener {
 
