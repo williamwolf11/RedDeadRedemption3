@@ -13,8 +13,8 @@ public class RedTest extends Applet implements ActionListener {
     
     public void init () {
         setLayout(new BorderLayout());
-        centerButton = new Button("Center");
-        centerButton.setBackground(Color.white);
+        centerButton = new Button("Restart");
+        centerButton.setBackground(Color.green);
         centerButton.addActionListener(this);
         colorButton = new Button("Red/Green");
         colorButton.setBackground(Color.white);
