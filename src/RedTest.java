@@ -9,21 +9,14 @@ import java.awt.event.*;
 public class RedTest extends Applet implements ActionListener {
 
     CircleCanvas c;
-    Button centerButton, colorButton;
+    Button restartButton;
+    Label titleLabel, scoreLabel;
+    
+    static final Color dgreen = new Color(0, 120, 90);
     
     public void init () {
         setLayout(new BorderLayout());
-        centerButton = new Button("Restart");
-        centerButton.setBackground(Color.green);
-        centerButton.addActionListener(this);
-        colorButton = new Button("Red/Green");
-        colorButton.setBackground(Color.white);
-        colorButton.addActionListener(this);
-        Panel p = new Panel();
-        p.setBackground(Color.black);
-        p.add(centerButton);
-        p.add(colorButton);
-        add("North", p);
+        add("North", makeTopControlPanel());
         c = new CircleCanvas();
         c.setBackground(Color.yellow);
         c.addMouseListener(c);
@@ -32,10 +25,30 @@ public class RedTest extends Applet implements ActionListener {
     }
     
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == centerButton)
+        if (e.getSource() == restartButton)
             c.center();
-        else if (e.getSource() == colorButton)
-            c.toggleColor();
+    }
+    
+    public Panel makeTopControlPanel() {
+    	Panel topControlPanel = new Panel();
+    	topControlPanel.setLayout(new GridLayout(1, 3));
+    	restartButton = new Button("Restart");
+        restartButton.setBackground(dgreen);
+        restartButton.addActionListener(this);
+        titleLabel = new Label("Red Dead Redeption 3");
+        titleLabel.setAlignment(Label.CENTER);
+        titleLabel.setBackground(dgreen);
+        titleLabel.setForeground(Color.white);
+        scoreLabel = new Label("Score: ");
+        scoreLabel.setAlignment(Label.CENTER);
+        scoreLabel.setBackground(dgreen);;
+        scoreLabel.setForeground(Color.white);
+        topControlPanel.setBackground(dgreen);
+        topControlPanel.add(scoreLabel);
+        topControlPanel.add(titleLabel);
+        topControlPanel.add(restartButton);
+        return topControlPanel;
+    	
     }
 }
 
