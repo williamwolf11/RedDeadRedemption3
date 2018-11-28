@@ -131,7 +131,9 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
     }
     
     // need these also because we implement a MouseListener
-    public void mouseClicked(MouseEvent event) { }
+    public void mouseClicked(MouseEvent event) { 
+    	toggleColor();
+    }
     public void mouseEntered(MouseEvent event) {
         toggleColor();
     }
@@ -147,6 +149,14 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
     }
     
     // need this also because we implement a MouseMotionListener
-    public void mouseMoved(MouseEvent event) { }
-
+    public void mouseMoved(MouseEvent event) {
+    	// now the circle follows the cursor around
+    	Point p = event.getPoint();
+        x = p.x;
+        y = p.y;
+        repaint();
     }
+
+	
+	}
+	
