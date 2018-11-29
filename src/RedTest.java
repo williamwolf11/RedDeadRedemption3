@@ -20,7 +20,7 @@ public class RedTest extends Applet implements ActionListener {
         setLayout(new BorderLayout());
         add("North", makeTopControlPanel());
         c = new CircleCanvas();
-        c.setBackground(Color.lightGray);
+        c.setBackground(Color.yellow);
         c.addMouseListener(c);
         c.addMouseMotionListener(c);
         add("Center", c);
@@ -28,7 +28,7 @@ public class RedTest extends Applet implements ActionListener {
     
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == restartButton)
-            c.center();
+           restart();
     }
     
     public Panel makeTopControlPanel() {
@@ -74,6 +74,18 @@ public class RedTest extends Applet implements ActionListener {
         restartButton.setForeground(dgreen);
         return restartButton;
     }
+    
+    // centers circle on canvas and repaints
+    public void restart() {
+    	/*
+        Dimension d = getSize();        // size of canvas
+        x =  d.width/2;
+        y =  d.height/2;
+        repaint();
+        */
+    	currentScore = 0;
+    }
+
 }
 
 
@@ -84,28 +96,30 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
         
     int x = 50; // position of circle
     int y = 20;
-    boolean redgreen = true; // color of circle (true = red, false = green)
+    boolean blackOrColor = true; // color of circle (true = black, false = colored)
+    boolean goodHit = false; // whether the click was a hit 
 
     // draw the circle at x, y
     public void paint(Graphics g) {
-        if (redgreen)
-            g.setColor(Color.red);
-        else
-            g.setColor(Color.green);
+        if (blackOrColor)
+            g.setColor(Color.black);
+        else {
+        	// dot appears red if hits target
+        	if (goodHit) {
+        		g.setColor(Color.red);
+        	}
+        	// dot appears gray if does not hit target
+        	else {
+        		g.setColor(Color.lightGray);
+        	} 
+        }
         g.fillOval(x-10, y-10, 20, 20);
     }
 
-    // centers circle on canvas and repaints
-    public void center() {
-        Dimension d = getSize();        // size of canvas
-        x =  d.width/2;
-        y =  d.height/2;
-        repaint();
-    }
 
     // toggles color of circle and repaints
     public void toggleColor() {
-        redgreen = ! redgreen;
+        blackOrColor = ! blackOrColor;
         repaint();
     }
 
@@ -114,39 +128,22 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
         Point p = event.getPoint();
         x = p.x;
         y = p.y;
+        toggleColor();
         repaint(); // redraws canvas (yellow) and draws circle
     }
 
-    // draws a (nonpermanent) blue circle when the mouse is released at
-    // a different position from where it was pressed
-    // it will get erased when repaint() is called (or the window is
-    // uncovered, resized, etc.)
     public void mouseReleased(MouseEvent event) {
-        Point p = event.getPoint();
-        if (x != p.x || y != p.y) {
-            Graphics g = getGraphics(); // get current graphics context
-            g.setColor(Color.blue);
-            g.fillOval(p.x-10, p.y-10, 20, 20);
-        }
+    	toggleColor();
     }
     
     // need these also because we implement a MouseListener
-    public void mouseClicked(MouseEvent event) { 
-    	toggleColor();
-    }
-    public void mouseEntered(MouseEvent event) {
-        toggleColor();
-    }
+    public void mouseClicked(MouseEvent event) { }
+    
+    public void mouseEntered(MouseEvent event) { }
+    
     public void mouseExited(MouseEvent event) { }
 
-
-    // this draws (non-permanent) gray circles when the mouse is dragged
-    public void mouseDragged(MouseEvent event)  {
-        Point p = event.getPoint();
-        Graphics g = getGraphics(); // get current graphics context
-        g.setColor(Color.gray);
-        g.fillOval(p.x-10, p.y-10, 20, 20);
-    }
+    public void mouseDragged(MouseEvent event)  { }
     
     // need this also because we implement a MouseMotionListener
     public void mouseMoved(MouseEvent event) {
