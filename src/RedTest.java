@@ -3,8 +3,9 @@
 import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 
-@SuppressWarnings({ "serial", "deprecation" })
+@SuppressWarnings({ "serial", "deprecation"})
 
 public class RedTest extends Applet implements ActionListener {
 	static Image img;
@@ -25,6 +26,7 @@ public class RedTest extends Applet implements ActionListener {
         c.addMouseMotionListener(c);
         add("Center", c);
         img = getImage(getDocumentBase(), "images/Marston.png");
+        //Found at http://convergence-series.wikia.com/wiki/John_Marston
     }
     
     public void actionPerformed(ActionEvent e) {
@@ -90,19 +92,27 @@ public class RedTest extends Applet implements ActionListener {
 @SuppressWarnings("serial")
 
 // a canvas that displays a circle
-class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener   {
+class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener, Runnable   {
 	
+	RedTest parent; //instance variable to be able to access applet components
+	Vector<Cowboys> cowboys;
+	Thread t;
+	long starttime;
     int x = 50; // position of circle
     int y = 20;
     boolean blackOrColor = true; // color of circle (true = black, false = colored)
     boolean goodHit = false; // whether the click was a hit 
     
-    //puts image of John Marston in the corner
-    /*public synchronized void paintJohn(Graphics g) {
-        g.drawImage(RedTest.img, 0, 0, this);
-    }*/
-
-    // draw the circle at x, y
+    public CircleCanvas(RedTest s) {
+    	parent = s;
+    	cowboys = new Vector<Cowboys>();
+    	addMouseListener(this);
+        addMouseMotionListener(this);
+    }
+    public CircleCanvas() {
+		// TODO Auto-generated constructor stub
+	}
+	//draws the canvas
     public void paint(Graphics g) {
         if (blackOrColor)
             g.setColor(Color.black);
@@ -116,10 +126,17 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
         		g.setColor(Color.lightGray);
         	} 
         }
-        //draws John Marston in the corner, then the target
+        //sets size of game area
         Dimension d = getSize();
+        d.height = 600;
+        d.width = 1000;
+        //puts image of John Marston in the corner
         g.drawImage(RedTest.img, 0, 0+(d.height-168), null);
         Graphics2D g2 = (Graphics2D) g;
+        //Found this at https://stackoverflow.com/questions/16995308/can-you-increase-
+        //line-thickness-when-using-java-graphics-for-an-applet-i-dont?lq=1
+        
+        //draws target around mouse location
 		g2.setStroke(new BasicStroke(3));
 		g2.drawOval(x-20, y-20, 40, 40);
 		g2.drawLine(x-25, y, x-15, y);
@@ -127,6 +144,35 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
 		g2.drawLine(x, y-25, x, y-15);
 		g2.drawLine(x, y+25, x, y+15);
 		g.fillOval(x-4, y-4, 8, 8);
+    }
+    
+    public void start() {
+        t = new Thread(this);
+        t.start();
+        starttime = System.currentTimeMillis(); // record start time 
+        //to reset timer
+    }
+
+    public void stop() {
+        t = null;
+    }
+    
+    public void run(Graphics g) {
+    	Thread currentThread = Thread.currentThread();
+    	while (currentThread == t);{
+    		try {
+    			Thread.sleep(1000); //wait a lil bit
+    		}catch (InterruptedException e) {
+                // do nothing
+            }
+    		cowboys.add(new Cowboys());
+    		for (int i=0; i<cowboys.size(); i++) {
+                Cowboys c = cowboys.get(i);
+                c.drawCowboy(g);
+            }
+    	}
+    	
+    	
     }
 
 
@@ -166,6 +212,11 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
         y = p.y;
         repaint();
     }
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	
 	}
