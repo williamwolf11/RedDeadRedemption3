@@ -36,18 +36,15 @@ public class RedTest extends Applet implements ActionListener {
     	topControlPanel.setLayout(new GridLayout(1, 3));
     	
     	restartButton = makeRestartButton();
-    	
         titleLabel = makeTitleLabel();
-       
         scoreLabel = makeScoreLabel();
         scoreLabel.setFont(new Font("Helvetica", Font.PLAIN, 16));
+        
         topControlPanel.setBackground(dgreen);
-       
         topControlPanel.add(scoreLabel);
-        
         topControlPanel.add(titleLabel);
-        
         topControlPanel.add(restartButton);
+        
         return topControlPanel;
     }
     
