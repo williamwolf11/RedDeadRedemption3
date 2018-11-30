@@ -20,7 +20,7 @@ public class RedTest extends Applet implements ActionListener {
     	currentScore = 0;
         setLayout(new BorderLayout());
         add("North", makeTopControlPanel());
-        c = new CircleCanvas();
+        c = new CircleCanvas(this);
         c.setBackground(Color.yellow);
         c.addMouseListener(c);
         c.addMouseMotionListener(c);
@@ -28,6 +28,14 @@ public class RedTest extends Applet implements ActionListener {
         img = getImage(getDocumentBase(), "images/Marston.png");
         //Found at http://convergence-series.wikia.com/wiki/John_Marston
     }
+    
+    /*public void start() {
+        c.start();
+    }
+
+    public void stop() {
+        c.stop();
+    }*/
     
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == restartButton)
@@ -92,26 +100,23 @@ public class RedTest extends Applet implements ActionListener {
 @SuppressWarnings("serial")
 
 // a canvas that displays a circle
-class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener, Runnable   {
+class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener  {
 	
 	RedTest parent; //instance variable to be able to access applet components
 	Vector<Cowboys> cowboys;
-	Thread t;
-	long starttime;
-    int x = 50; // position of circle
-    int y = 20;
+    int x; // position of circle
+    int y;
     boolean blackOrColor = true; // color of circle (true = black, false = colored)
     boolean goodHit = false; // whether the click was a hit 
+    
+    Thread t;
     
     public CircleCanvas(RedTest s) {
     	parent = s;
     	cowboys = new Vector<Cowboys>();
-    	addMouseListener(this);
-        addMouseMotionListener(this);
+    	cowboys.add(new Cowboys());
     }
-    public CircleCanvas() {
-		// TODO Auto-generated constructor stub
-	}
+    
 	//draws the canvas
     public void paint(Graphics g) {
         if (blackOrColor)
@@ -135,7 +140,7 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
         Graphics2D g2 = (Graphics2D) g;
         //Found this at https://stackoverflow.com/questions/16995308/can-you-increase-
         //line-thickness-when-using-java-graphics-for-an-applet-i-dont?lq=1
-        
+       
         //draws target around mouse location
 		g2.setStroke(new BasicStroke(3));
 		g2.drawOval(x-20, y-20, 40, 40);
@@ -144,10 +149,29 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
 		g2.drawLine(x, y-25, x, y-15);
 		g2.drawLine(x, y+25, x, y+15);
 		g.fillOval(x-4, y-4, 8, 8);
+		//cowboys.add(new Cowboys());
+		//run(g);
+		/*cowboys.add(new Cowboys());
+		Cowboys c = cowboys.get(0);
+		c.drawCowboy(g2);*/
+		
     }
     
-    public void start() {
-        t = new Thread(this);
+    public void run(Graphics g){
+    	Thread currentThread = Thread.currentThread();
+    	while(currentThread == t) {
+    		if(System.currentTimeMillis() != 0) {
+    			cowboys.add(new Cowboys());}
+    		for (int i=0; i<cowboys.size(); i++) {
+    			Cowboys c = cowboys.get(i);
+    			c.drawCowboy(g);
+    		}
+    	}
+    }
+
+    
+    /*public void start() {
+        t = new Thread();
         t.start();
         starttime = System.currentTimeMillis(); // record start time 
         //to reset timer
@@ -157,23 +181,26 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
         t = null;
     }
     
-    public void run(Graphics g) {
+    public void run(){
+    	Graphics2D g2 = (Graphics2D) g;
     	Thread currentThread = Thread.currentThread();
     	while (currentThread == t);{
     		try {
-    			Thread.sleep(1000); //wait a lil bit
+    			Thread.sleep(1000); //wait one second
     		}catch (InterruptedException e) {
                 // do nothing
             }
-    		cowboys.add(new Cowboys());
     		for (int i=0; i<cowboys.size(); i++) {
                 Cowboys c = cowboys.get(i);
-                c.drawCowboy(g);
+                c.drawCowboy(g2);
             }
+    		repaint();
     	}
     	
     	
-    }
+    }*/
+    	
+    
 
 
     // toggles color of circle and repaints
@@ -212,11 +239,6 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
         y = p.y;
         repaint();
     }
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	
 	}
