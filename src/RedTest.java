@@ -100,7 +100,7 @@ public class RedTest extends Applet implements ActionListener {
 @SuppressWarnings("serial")
 
 // a canvas that displays a circle
-class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener  {
+class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMotionListener  {
 	
 	RedTest parent; //instance variable to be able to access applet components
 	Vector<Cowboys> cowboys;
