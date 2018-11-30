@@ -52,7 +52,7 @@ public class RedTest extends Applet implements ActionListener {
     	titleLabel = new Label("Red Dead Redeption 3");
     	titleLabel.setFont(new Font("Helvetica", Font.BOLD, 16));
         titleLabel.setAlignment(Label.CENTER);
-        titleLabel.setForeground(Color.white);
+        titleLabel.setForeground(Color.red);
     	return titleLabel;
     }
     
@@ -110,7 +110,15 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
         		g.setColor(Color.lightGray);
         	} 
         }
-        g.fillOval(x-10, y-10, 20, 20);
+        //draws the target
+        Graphics2D g2 = (Graphics2D) g;
+		g2.setStroke(new BasicStroke(3));
+		g2.drawOval(x-20, y-20, 40, 40);
+		g2.drawLine(x-25, y, x-15, y);
+		g2.drawLine(x+25, y, x+15, y);
+		g2.drawLine(x, y-25, x, y-15);
+		g2.drawLine(x, y+25, x, y+15);
+		g.fillOval(x-4, y-4, 8, 8);
     }
 
 
