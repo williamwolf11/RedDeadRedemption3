@@ -109,8 +109,6 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
     boolean blackOrColor = true; // color of circle (true = black, false = colored)
     boolean goodHit = false; // whether the click was a hit 
     
-    Thread t;
-    
     public CircleCanvas(RedTest s) {
     	parent = s;
     	cowboys = new Vector<Cowboys>();
@@ -150,17 +148,15 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
 		g2.drawLine(x, y+25, x, y+15);
 		g.fillOval(x-4, y-4, 8, 8);
 		//cowboys.add(new Cowboys());
-		//run(g);
 		/*cowboys.add(new Cowboys());
 		Cowboys c = cowboys.get(0);
 		c.drawCowboy(g2);*/
 		
     }
     
-    public void run(Graphics g){
-    	Thread currentThread = Thread.currentThread();
-    	while(currentThread == t) {
-    		if(System.currentTimeMillis() != 0) {
+    public synchronized void run(Graphics g){
+    	while(cowboys.size() < 10) {
+    		if(System.currentTimeMillis()%1000 == 0) {
     			cowboys.add(new Cowboys());}
     		for (int i=0; i<cowboys.size(); i++) {
     			Cowboys c = cowboys.get(i);
