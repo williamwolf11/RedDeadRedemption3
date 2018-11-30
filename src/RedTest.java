@@ -7,7 +7,7 @@ import java.awt.event.*;
 @SuppressWarnings({ "serial", "deprecation" })
 
 public class RedTest extends Applet implements ActionListener {
-
+	static Image img;
     protected CircleCanvas c;
     protected Button restartButton;
     protected Label titleLabel, scoreLabel;
@@ -24,6 +24,7 @@ public class RedTest extends Applet implements ActionListener {
         c.addMouseListener(c);
         c.addMouseMotionListener(c);
         add("Center", c);
+        img = getImage(getDocumentBase(), "images/Marston.png");
     }
     
     public void actionPerformed(ActionEvent e) {
@@ -90,11 +91,16 @@ public class RedTest extends Applet implements ActionListener {
 
 // a canvas that displays a circle
 class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener   {
-        
+	
     int x = 50; // position of circle
     int y = 20;
     boolean blackOrColor = true; // color of circle (true = black, false = colored)
     boolean goodHit = false; // whether the click was a hit 
+    
+    //puts image of John Marston in the corner
+    /*public synchronized void paintJohn(Graphics g) {
+        g.drawImage(RedTest.img, 0, 0, this);
+    }*/
 
     // draw the circle at x, y
     public void paint(Graphics g) {
@@ -110,7 +116,9 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
         		g.setColor(Color.lightGray);
         	} 
         }
-        //draws the target
+        //draws John Marston in the corner, then the target
+        Dimension d = getSize();
+        g.drawImage(RedTest.img, 0, 0+(d.height-168), null);
         Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(3));
 		g2.drawOval(x-20, y-20, 40, 40);
