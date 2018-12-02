@@ -7,7 +7,7 @@ import java.util.*;
 
 @SuppressWarnings({ "serial", "deprecation"})
 
-public class RedTest extends Applet implements ActionListener {
+public class RedTest extends Applet implements ActionListener{
 	static Image img;
     protected CircleCanvas c;
     protected Button restartButton;
@@ -153,7 +153,6 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
 		Cowboys c = cowboys.get(0);
 		c.drawCowboy(g2);
 		start();*/
-		run(g);
 		
     }
     
@@ -169,22 +168,24 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     	t.stop();
     }
 
-    public void run(Graphics g){
-    	/*Thread currentThread = Thread.currentThread();
+    public void run(){
+    	Thread currentThread = Thread.currentThread();
     	while (currentThread == t) {
-    		while(cowboys.size() < 10) {*/
+    		while(cowboys.size() < 10) {
     			if((System.currentTimeMillis())%1000 == 0) {
-    				cowboys.add(new Cowboys());}
-    				for (int i=0; i<cowboys.size(); i++) {
-    					Cowboys c = cowboys.get(i);
-    					c.drawCowboy(g);
-    					repaint();
-    				}
+    				cowboys.add(new Cowboys());
     			}
-    		/*}
+    			for (int i=0; i<cowboys.size(); i++) {
+    				Cowboys c = cowboys.get(i);
+    				Graphics g = getGraphics();
+    				c.drawCowboy(g);	
+    				}
+    				
+    			} 
+    		
     	}
     	
-    }*/
+    }
 
 
   
@@ -239,11 +240,7 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
         repaint();
     }
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	
 	}
