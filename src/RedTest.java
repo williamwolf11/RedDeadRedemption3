@@ -151,10 +151,11 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
 		/*cowboys.add(new Cowboys());
 		Cowboys c = cowboys.get(0);
 		c.drawCowboy(g2);*/
+		run(g);
 		
     }
     
-    public synchronized void run(Graphics g){
+    public void run(Graphics g){
     	while(cowboys.size() < 10) {
     		if(System.currentTimeMillis()%1000 == 0) {
     			cowboys.add(new Cowboys());}
