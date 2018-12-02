@@ -2,22 +2,45 @@
 import java.awt.*;
 
 public class Cowboys {
-
-	int x;     // position
+    int x;     // position
     int y;
-    int size = 5;
+    int width;    // size
+    int height;
 
-    public Cowboys(int screenX, int screenY){ // creates ball with random attributes
-        x = (int)(Math.random()*screenX)+0;
-        y = (int)(Math.random()*screenY)+0;
-        // size = (int)(Math.random()*8)+8;
+    public Cowboys(){ // creates ball with random attributes
+        x = (int)(Math.random()*1000);
+        y = (int)(Math.random()*600);
+        width = (int)(Math.random()*100);
+        height = (int)(Math.random()*100);
+        }
     }
 
-    public void draw(Graphics g) {
-        g.setColor(Color.blue);
-        g.fillOval(x - size, y - size, 2*size, 2*size);
-        g.setColor(Color.black);
-        g.drawOval(x - size, y - size, 2*size, 2*size);
-    }
+    /*public boolean move(int width, int height, int pmin, int pmax) {
+        // moves the ball within the box defined by width and height
+        // returns true if ball gets lost
+        // if it hits the top and sides, bounce it back
+        // if it hits the bottom, bounce it only if it is between
+        // pmin and pmax; return true otherwise
 
+        x += dx;
+        if (x-radius <0 || x+radius >= width) {
+            dx = -dx;
+            x += dx;
+        }
+
+        y += dy;
+        if (y+radius >= height && (x+radius < pmin || x-radius > pmax))
+            return true;
+        if (y-radius < 0 || y+radius >= height) {
+            dy = -dy;
+            y += dy;
+        }
+        return false;
+    }*/
+
+    public void drawCowboy(Graphics g) {
+        // draw the ball
+        g.setColor(Color.red);
+        g.drawRect(x, y, width, height);
+    }
 }
