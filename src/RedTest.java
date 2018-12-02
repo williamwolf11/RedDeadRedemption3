@@ -3,11 +3,12 @@
 import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 
-@SuppressWarnings({ "serial", "deprecation" })
+@SuppressWarnings({ "serial", "deprecation"})
 
 public class RedTest extends Applet implements ActionListener {
-
+	static Image img;
     protected CircleCanvas c;
     protected Button restartButton;
     protected Label titleLabel, scoreLabel;
@@ -19,12 +20,22 @@ public class RedTest extends Applet implements ActionListener {
     	currentScore = 0;
         setLayout(new BorderLayout());
         add("North", makeTopControlPanel());
-        c = new CircleCanvas();
+        c = new CircleCanvas(this);
         c.setBackground(Color.yellow);
         c.addMouseListener(c);
         c.addMouseMotionListener(c);
         add("Center", c);
+        img = getImage(getDocumentBase(), "images/Marston.png");
+        //Found at http://convergence-series.wikia.com/wiki/John_Marston
     }
+    
+    /*public void start() {
+        c.start();
+    }
+
+    public void stop() {
+        c.stop();
+    }*/
     
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == restartButton)
@@ -52,7 +63,7 @@ public class RedTest extends Applet implements ActionListener {
     	titleLabel = new Label("Red Dead Redeption 3");
     	titleLabel.setFont(new Font("Helvetica", Font.BOLD, 16));
         titleLabel.setAlignment(Label.CENTER);
-        titleLabel.setForeground(Color.white);
+        titleLabel.setForeground(Color.red);
     	return titleLabel;
     }
     
@@ -89,14 +100,22 @@ public class RedTest extends Applet implements ActionListener {
 @SuppressWarnings("serial")
 
 // a canvas that displays a circle
-class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener   {
-        
-    int x = 50; // position of circle
-    int y = 20;
+class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMotionListener  {
+	
+	RedTest parent; //instance variable to be able to access applet components
+	Vector<Cowboys> cowboys;
+    int x; // position of circle
+    int y;
     boolean blackOrColor = true; // color of circle (true = black, false = colored)
     boolean goodHit = false; // whether the click was a hit 
-
-    // draw the circle at x, y
+    
+    public CircleCanvas(RedTest s) {
+    	parent = s;
+    	cowboys = new Vector<Cowboys>();
+    	cowboys.add(new Cowboys());
+    }
+    
+	//draws the canvas
     public void paint(Graphics g) {
         if (blackOrColor)
             g.setColor(Color.black);
@@ -110,8 +129,74 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
         		g.setColor(Color.lightGray);
         	} 
         }
-        g.fillOval(x-10, y-10, 20, 20);
+        //sets size of game area
+        Dimension d = getSize();
+        d.height = 600;
+        d.width = 1000;
+        //puts image of John Marston in the corner
+        g.drawImage(RedTest.img, 0, 0+(d.height-168), null);
+        Graphics2D g2 = (Graphics2D) g;
+        //Found this at https://stackoverflow.com/questions/16995308/can-you-increase-
+        //line-thickness-when-using-java-graphics-for-an-applet-i-dont?lq=1
+       
+        //draws target around mouse location
+		g2.setStroke(new BasicStroke(3));
+		g2.drawOval(x-20, y-20, 40, 40);
+		g2.drawLine(x-25, y, x-15, y);
+		g2.drawLine(x+25, y, x+15, y);
+		g2.drawLine(x, y-25, x, y-15);
+		g2.drawLine(x, y+25, x, y+15);
+		g.fillOval(x-4, y-4, 8, 8);
+		//cowboys.add(new Cowboys());
+		/*cowboys.add(new Cowboys());
+		Cowboys c = cowboys.get(0);
+		c.drawCowboy(g2);*/
+		
     }
+    
+    public synchronized void run(Graphics g){
+    	while(cowboys.size() < 10) {
+    		if(System.currentTimeMillis()%1000 == 0) {
+    			cowboys.add(new Cowboys());}
+    		for (int i=0; i<cowboys.size(); i++) {
+    			Cowboys c = cowboys.get(i);
+    			c.drawCowboy(g);
+    		}
+    	}
+    }
+
+    
+    /*public void start() {
+        t = new Thread();
+        t.start();
+        starttime = System.currentTimeMillis(); // record start time 
+        //to reset timer
+    }
+
+    public void stop() {
+        t = null;
+    }
+    
+    public void run(){
+    	Graphics2D g2 = (Graphics2D) g;
+    	Thread currentThread = Thread.currentThread();
+    	while (currentThread == t);{
+    		try {
+    			Thread.sleep(1000); //wait one second
+    		}catch (InterruptedException e) {
+                // do nothing
+            }
+    		for (int i=0; i<cowboys.size(); i++) {
+                Cowboys c = cowboys.get(i);
+                c.drawCowboy(g2);
+            }
+    		repaint();
+    	}
+    	
+    	
+    }*/
+    	
+    
 
 
     // toggles color of circle and repaints
