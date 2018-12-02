@@ -236,6 +236,12 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
         repaint();
     }
 
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	}
 	

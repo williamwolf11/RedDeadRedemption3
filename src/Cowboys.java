@@ -13,7 +13,7 @@ public class Cowboys {
         width = (int)(Math.random()*100);
         height = (int)(Math.random()*100);
         }
-    }
+    
 
     /*public boolean move(int width, int height, int pmin, int pmax) {
         // moves the ball within the box defined by width and height
