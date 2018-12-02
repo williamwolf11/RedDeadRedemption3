@@ -13,6 +13,9 @@ public class RedTest extends Applet implements ActionListener {
     protected Button restartButton;
     protected Label titleLabel, scoreLabel;
     protected int currentScore;
+    Thread t;
+    int timeBetween = 2000;
+    long starttime;
     
     static final Color dgreen = new Color(0, 120, 90);
     
@@ -29,13 +32,32 @@ public class RedTest extends Applet implements ActionListener {
         //Found at http://convergence-series.wikia.com/wiki/John_Marston
     }
     
-    /*public void start() {
-        c.start();
+    public void start() {
+        
+        t = new Thread();
+        t.start();
+        starttime = System.currentTimeMillis(); 
     }
 
     public void stop() {
-        c.stop();
-    }*/
+        t.stop();
+    }
+    
+    public void run(Graphics g){
+    	Thread currentThread = Thread.currentThread();
+    	while (currentThread == t) {
+    		while(cowboys.size() < 10) {
+    			if((System.currentTimeMillis()-starttime)%1000 == 0) {
+    				cowboys.add(new Cowboys());
+    				for (int i=0; i<cowboys.size(); i++) {
+    					Cowboys c = cowboys.get(i);
+    					c.drawCowboy(g);
+    					repaint();
+    				}
+    			}
+    		}
+    	}
+    }
     
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == restartButton)
@@ -108,8 +130,7 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     int y;
     boolean blackOrColor = true; // color of circle (true = black, false = colored)
     boolean goodHit = false; // whether the click was a hit 
-    Thread t;
-    int timeBetween = 2000;
+
     
     public CircleCanvas(RedTest s) {
     	parent = s;
@@ -161,11 +182,13 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     	Thread currentThread = Thread.currentThread();
     	while (currentThread == t) {
     		while(cowboys.size() < 10) {
-    			if(System.currentTimeMillis()%1000 == 0) {
-    				cowboys.add(new Cowboys());}
-    			for (int i=0; i<cowboys.size(); i++) {
-    				Cowboys c = cowboys.get(i);
-    				c.drawCowboy(g);
+    			if((System.currentTimeMillis()-starttime)%1000 == 0) {
+    				cowboys.add(new Cowboys());
+    				for (int i=0; i<cowboys.size(); i++) {
+    					Cowboys c = cowboys.get(i);
+    					c.drawCowboy(g);
+    					repaint();
+    				}
     			}
     		}
     	}
@@ -175,7 +198,7 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     public void start() {
         t = new Thread();
         t.start();
-        long starttime = System.currentTimeMillis(); // record start time 
+        starttime = System.currentTimeMillis(); 
         //to reset timer
     }
 
