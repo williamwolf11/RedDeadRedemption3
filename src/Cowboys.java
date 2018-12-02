@@ -8,10 +8,10 @@ public class Cowboys {
     int height;
 
     public Cowboys(){ // creates ball with random attributes
-        x = (int)(Math.random()*1000);
-        y = (int)(Math.random()*600);
-        width = (int)(Math.random()*100);
-        height = (int)(Math.random()*100);
+        x = (int)(Math.random()*500);
+        y = (int)(Math.random()*300);
+        width = 15;
+        height = 15;
         }
     
 

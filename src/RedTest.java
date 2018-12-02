@@ -13,9 +13,7 @@ public class RedTest extends Applet implements ActionListener {
     protected Button restartButton;
     protected Label titleLabel, scoreLabel;
     protected int currentScore;
-    Thread t;
-    int timeBetween = 2000;
-    long starttime;
+    
     
     static final Color dgreen = new Color(0, 120, 90);
     
@@ -30,34 +28,10 @@ public class RedTest extends Applet implements ActionListener {
         add("Center", c);
         img = getImage(getDocumentBase(), "images/Marston.png");
         //Found at http://convergence-series.wikia.com/wiki/John_Marston
-    }
-    
-    public void start() {
         
-        t = new Thread();
-        t.start();
-        starttime = System.currentTimeMillis(); 
-    }
-
-    public void stop() {
-        t.stop();
     }
     
-    public void run(Graphics g){
-    	Thread currentThread = Thread.currentThread();
-    	while (currentThread == t) {
-    		while(cowboys.size() < 10) {
-    			if((System.currentTimeMillis()-starttime)%1000 == 0) {
-    				cowboys.add(new Cowboys());
-    				for (int i=0; i<cowboys.size(); i++) {
-    					Cowboys c = cowboys.get(i);
-    					c.drawCowboy(g);
-    					repaint();
-    				}
-    			}
-    		}
-    	}
-    }
+    
     
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == restartButton)
@@ -130,6 +104,10 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     int y;
     boolean blackOrColor = true; // color of circle (true = black, false = colored)
     boolean goodHit = false; // whether the click was a hit 
+    
+    Thread t;
+    int timeBetween = 2000;
+    long starttime;
 
     
     public CircleCanvas(RedTest s) {
@@ -173,57 +151,43 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
 		//cowboys.add(new Cowboys());
 		/*cowboys.add(new Cowboys());
 		Cowboys c = cowboys.get(0);
-		c.drawCowboy(g2);*/
+		c.drawCowboy(g2);
+		start();*/
 		run(g);
 		
     }
     
+    public void start() {
+
+    	t = new Thread();
+    	t.start();
+    	starttime = System.currentTimeMillis(); 
+    }
+
+    @SuppressWarnings("deprecation")
+	public void stop() {
+    	t.stop();
+    }
+
     public void run(Graphics g){
-    	Thread currentThread = Thread.currentThread();
+    	/*Thread currentThread = Thread.currentThread();
     	while (currentThread == t) {
-    		while(cowboys.size() < 10) {
-    			if((System.currentTimeMillis()-starttime)%1000 == 0) {
-    				cowboys.add(new Cowboys());
+    		while(cowboys.size() < 10) {*/
+    			if((System.currentTimeMillis())%5000 == 0) {
+    				cowboys.add(new Cowboys());}
     				for (int i=0; i<cowboys.size(); i++) {
     					Cowboys c = cowboys.get(i);
     					c.drawCowboy(g);
     					repaint();
     				}
     			}
-    		}
+    		/*}
     	}
-    }
-
-    
-    public void start() {
-        t = new Thread();
-        t.start();
-        starttime = System.currentTimeMillis(); 
-        //to reset timer
-    }
-
-    public void stop() {
-        t = null;
-    }
-    /*
-    public void run(){
-    	Graphics2D g2 = (Graphics2D) g;
-    	Thread currentThread = Thread.currentThread();
-    	while (currentThread == t);{
-    		try {
-    			Thread.sleep(1000); //wait one second
-    		}catch (InterruptedException e) {
-                // do nothing
-            }
-    		for (int i=0; i<cowboys.size(); i++) {
-                Cowboys c = cowboys.get(i);
-                c.drawCowboy(g2);
-            }
-    		repaint();
-    	}
-    	
     	
     }*/
+
+
+  
     	
     
 
