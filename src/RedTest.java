@@ -81,16 +81,12 @@ public class RedTest extends Applet implements ActionListener{
     
     // centers circle on canvas and repaints
     public void restart() {
-    	/*
-        Dimension d = getSize();        // size of canvas
-        x =  d.width/2;
-        y =  d.height/2;
-        repaint();
-        */
+    	CircleCanvas.clearVector();
     	currentScore = 0;
     }
 
 }
+
 
 
 @SuppressWarnings("serial")
@@ -99,7 +95,7 @@ public class RedTest extends Applet implements ActionListener{
 class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMotionListener  {
 	
 	RedTest parent; //instance variable to be able to access applet components
-	Vector<Cowboys> cowboys;
+	static Vector<Cowboys> cowboys;
     int x; // position of circle
     int y;
     boolean blackOrColor = true; // color of circle (true = black, false = colored)
@@ -170,9 +166,7 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     }
 
     public void run(Graphics g){
-    	/*Thread currentThread = Thread.currentThread();
-    	while (currentThread == t) {
-    		while(cowboys.size() < 10) {*/
+    		if(cowboys.size() < 10) {
     			if((System.currentTimeMillis())%1000 == 0) {
     				cowboys.add(new Cowboys());}
     				for (int i=0; i<cowboys.size(); i++) {
@@ -181,7 +175,12 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     					repaint();
     				}
     			}
-    		
+    		else {
+    			cowboys.clear();
+    			parent.scoreLabel.setText("Game Over! Score: " + parent.currentScore);
+    			
+    		}
+    }
     	
     	
     
@@ -243,6 +242,10 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
 	public void run() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public static void clearVector() {
+		cowboys.clear();
 	}
 
 	
