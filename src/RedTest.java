@@ -208,6 +208,8 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
 			if(p.x <= c.x+15 && p.x >= c.x && p.y <= c.y+15 && p.y >= c.y) {
 				cowboys.remove(i--);
 				goodHit = true;
+				parent.currentScore += 1;
+				parent.scoreLabel.setText("Score: " + parent.currentScore);
 			}
 			repaint();}
         toggleColor();
