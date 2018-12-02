@@ -173,7 +173,7 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     	/*Thread currentThread = Thread.currentThread();
     	while (currentThread == t) {
     		while(cowboys.size() < 10) {*/
-    			if((System.currentTimeMillis())%5000 == 0) {
+    			if((System.currentTimeMillis())%1000 == 0) {
     				cowboys.add(new Cowboys());}
     				for (int i=0; i<cowboys.size(); i++) {
     					Cowboys c = cowboys.get(i);
@@ -203,11 +203,19 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
         Point p = event.getPoint();
         x = p.x;
         y = p.y;
+        for (int i=0; i<cowboys.size(); i++) {
+			Cowboys c = cowboys.get(i);
+			if(p.x <= c.x+15 && p.x >= c.x && p.y <= c.y+15 && p.y >= c.y) {
+				cowboys.remove(i--);
+				goodHit = true;
+			}
+			repaint();}
         toggleColor();
         repaint(); // redraws canvas (yellow) and draws circle
     }
 
     public void mouseReleased(MouseEvent event) {
+    	goodHit = false;
     	toggleColor();
     }
     
