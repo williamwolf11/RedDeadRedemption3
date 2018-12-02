@@ -39,7 +39,7 @@ public class Cowboys {
     }*/
 
     public void drawCowboy(Graphics g) {
-        // draw the ball
+        // draw the cowboy
         g.setColor(Color.red);
         g.drawRect(x, y, width, height);
     }
