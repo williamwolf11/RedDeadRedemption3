@@ -108,6 +108,8 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     int y;
     boolean blackOrColor = true; // color of circle (true = black, false = colored)
     boolean goodHit = false; // whether the click was a hit 
+    Thread t;
+    int timeBetween = 2000;
     
     public CircleCanvas(RedTest s) {
     	parent = s;
@@ -156,28 +158,31 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     }
     
     public void run(Graphics g){
-    	while(cowboys.size() < 10) {
-    		if(System.currentTimeMillis()%1000 == 0) {
-    			cowboys.add(new Cowboys());}
-    		for (int i=0; i<cowboys.size(); i++) {
-    			Cowboys c = cowboys.get(i);
-    			c.drawCowboy(g);
+    	Thread currentThread = Thread.currentThread();
+    	while (currentThread == t) {
+    		while(cowboys.size() < 10) {
+    			if(System.currentTimeMillis()%1000 == 0) {
+    				cowboys.add(new Cowboys());}
+    			for (int i=0; i<cowboys.size(); i++) {
+    				Cowboys c = cowboys.get(i);
+    				c.drawCowboy(g);
+    			}
     		}
     	}
     }
 
     
-    /*public void start() {
+    public void start() {
         t = new Thread();
         t.start();
-        starttime = System.currentTimeMillis(); // record start time 
+        long starttime = System.currentTimeMillis(); // record start time 
         //to reset timer
     }
 
     public void stop() {
         t = null;
     }
-    
+    /*
     public void run(){
     	Graphics2D g2 = (Graphics2D) g;
     	Thread currentThread = Thread.currentThread();
