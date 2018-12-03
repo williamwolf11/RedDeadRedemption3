@@ -178,7 +178,8 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
     			}
     		for (int i=0; i<cowboys.size(); i++) {
     			Cowboys c = cowboys.get(i);
-    			c.drawCowboy(g);
+    			Image img2 = getImage(getDocumentBase(), "images/CSImage2.png");
+    			c.drawCowboy(g, img2);
     			repaint();
     		}
     	}

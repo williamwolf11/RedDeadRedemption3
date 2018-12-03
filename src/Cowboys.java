@@ -4,14 +4,12 @@ import java.awt.*;
 public class Cowboys {
     int x;     // position
     int y;
-    int width;    // size
-    int height;
+
+
 
     public Cowboys(){ // creates ball with random attributes
         x = (int)(Math.random()*900);
         y = (int)(Math.random()*500);
-        width = 20;
-        height = 60;
         }
     
 
@@ -38,9 +36,8 @@ public class Cowboys {
         return false;
     }*/
 
-    public void drawCowboy(Graphics g) {
+    public void drawCowboy(Graphics g, Image img) {
         // draw the cowboy
-        g.setColor(Color.red);
-        g.drawRect(x, y, width, height);
+        g.drawImage(img, x, y, null);
     }
 }
