@@ -4,6 +4,8 @@ import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.*;
 
 @SuppressWarnings({ "serial", "deprecation"})
@@ -98,7 +100,7 @@ public class RedTest extends Applet implements ActionListener{
 @SuppressWarnings("serial")
 
 // a canvas that displays a circle
-class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener  {
+class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMotionListener  {
 	
 	RedTest parent; //instance variable to be able to access applet components
 	static Vector<Cowboys> cowboys;
@@ -163,7 +165,6 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
     }
     
     public void start() {
-
     	t = new Thread();
     	t.start();
     	starttime = System.currentTimeMillis(); 
@@ -191,6 +192,24 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
     	parent.scoreLabel.setText("Game Over! Score: " + parent.currentScore);
     	}
     }
+    
+    /*public void run(Graphics g){
+    	if(cowboys.size() < 25) {
+    			if (((System.currentTimeMillis()-starttime)/1000)%10 == 0 ) {
+    			cowboys.add(new Cowboys());
+    			/*if(speed > 500) {
+    				speed-=100;}
+    			}
+    		for (int i=0; i<cowboys.size(); i++) {
+    			Cowboys c = cowboys.get(i);
+    			c.drawCowboy(g, parent.img2);
+    			repaint();
+    		}
+    	}
+    	else {
+    	parent.scoreLabel.setText("Game Over! Score: " + parent.currentScore);
+    	}
+    }*/
 
 
     // toggles color of circle and repaints
@@ -242,6 +261,12 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
 	
 	public static void clearVector() {
 		cowboys.clear();
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
