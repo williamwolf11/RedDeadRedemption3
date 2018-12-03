@@ -62,7 +62,7 @@ public class RedTest extends Applet implements ActionListener{
     }
     
     public Label makeTitleLabel() {
-    	titleLabel = new Label("Red Dead Redeption 3");
+    	titleLabel = new Label("Red Dead Redemption 3");
     	titleLabel.setFont(new Font("Helvetica", Font.BOLD, 16));
         titleLabel.setAlignment(Label.CENTER);
         titleLabel.setForeground(Color.red);
@@ -100,7 +100,7 @@ public class RedTest extends Applet implements ActionListener{
 @SuppressWarnings("serial")
 
 // a canvas that displays a circle
-class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMotionListener  {
+class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener  {
 	
 	RedTest parent; //instance variable to be able to access applet components
 	static Vector<Cowboys> cowboys;
@@ -263,11 +263,7 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
 		cowboys.clear();
 	}
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 	
 
