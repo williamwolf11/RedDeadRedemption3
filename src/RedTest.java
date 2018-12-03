@@ -30,7 +30,7 @@ public class RedTest extends Applet implements ActionListener{
         add("Center", c);
         img = getImage(getDocumentBase(), "images/Marston.png");
         //Found at http://convergence-series.wikia.com/wiki/John_Marston
-        img2 = getImage(getDocumentBase(), "images/CSImage2.png");
+        img2 = getImage(getDocumentBase(), "images/CSImage3.png");
         
     }
     
