@@ -167,21 +167,25 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
     public void start() {
     	t = new Thread();
     	t.start();
-    	starttime = System.currentTimeMillis(); 
+    	starttime = System.currentTimeMillis();
+
     }
 
     @SuppressWarnings("deprecation")
 	public void stop() {
     	t.stop();
+
     }
 
     public void run(Graphics g){
+
     	if(cowboys.size() < 25) {
-    			if (System.currentTimeMillis()%speed <= 1) {
+    		if (System.currentTimeMillis()%speed <= 1) {
     			cowboys.add(new Cowboys());
-    			if(speed > 500) {
-    				speed-=100;}
-    			}
+    		}
+    		if(speed > 500) {
+    			speed-=100;
+    		}
     		for (int i=0; i<cowboys.size(); i++) {
     			Cowboys c = cowboys.get(i);
     			c.drawCowboy(g, parent.img2);
@@ -189,8 +193,9 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
     		}
     	}
     	else {
-    	parent.scoreLabel.setText("Game Over! Score: " + parent.currentScore);
+    		parent.scoreLabel.setText("Game Over! Score: " + parent.currentScore);
     	}
+        
     }
     
     /*public void run(Graphics g){
