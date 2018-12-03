@@ -9,7 +9,7 @@ public class Cowboys {
 
     public Cowboys(){ // creates ball with random attributes
         x = (int)(Math.random()*900);
-        y = (int)(Math.random()*500);
+        y = (int)(Math.random()*300) + 200;
         }
     
 

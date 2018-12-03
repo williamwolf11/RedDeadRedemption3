@@ -179,7 +179,7 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
 
     public void run(Graphics g){
 
-    	if(cowboys.size() < 25) {
+    	if(cowboys.size() < 15) {
     		if (System.currentTimeMillis()%speed <= 1) {
     			cowboys.add(new Cowboys());
     		}
