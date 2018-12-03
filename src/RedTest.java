@@ -4,6 +4,7 @@ import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import javax.swing.*;
 
 @SuppressWarnings({ "serial", "deprecation"})
 
@@ -81,8 +82,10 @@ public class RedTest extends Applet implements ActionListener{
     
     // centers circle on canvas and repaints
     public void restart() {
-    	CircleCanvas.clearVector();
     	currentScore = 0;
+    	scoreLabel.setText("Score: " + currentScore);
+    	c = new CircleCanvas(this);
+    	add("Center", c);
     }
 
 }
@@ -92,7 +95,7 @@ public class RedTest extends Applet implements ActionListener{
 @SuppressWarnings("serial")
 
 // a canvas that displays a circle
-class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMotionListener  {
+class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener  {
 	
 	RedTest parent; //instance variable to be able to access applet components
 	static Vector<Cowboys> cowboys;
@@ -100,6 +103,7 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     int y;
     boolean blackOrColor = true; // color of circle (true = black, false = colored)
     boolean goodHit = false; // whether the click was a hit 
+    int speed = 3000;
     
     Thread t;
     int timeBetween = 2000;
@@ -166,22 +170,24 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     }
 
     public void run(Graphics g){
-    		if(cowboys.size() < 10) {
-    			if((System.currentTimeMillis())%1000 == 0) {
-    				cowboys.add(new Cowboys());}
-    				for (int i=0; i<cowboys.size(); i++) {
-    					Cowboys c = cowboys.get(i);
-    					c.drawCowboy(g);
-    					repaint();
-    				}
+    	if(cowboys.size() < 25) {
+    			if (System.currentTimeMillis()%speed <= 1) {
+    			cowboys.add(new Cowboys());
+    			if(speed > 500) {
+    				speed-=500;}
     			}
-    		else {
-    			cowboys.clear();
-    			parent.scoreLabel.setText("Game Over! Score: " + parent.currentScore);
-    			
+    		for (int i=0; i<cowboys.size(); i++) {
+    			Cowboys c = cowboys.get(i);
+    			c.drawCowboy(g);
+    			repaint();
     		}
+    	}
+    	else {
+
+    	parent.scoreLabel.setText("Game Over! Score: " + parent.currentScore);
+    	}
+
     }
-    	
     	
     
 
@@ -204,7 +210,7 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
         y = p.y;
         for (int i=0; i<cowboys.size(); i++) {
 			Cowboys c = cowboys.get(i);
-			if(p.x <= c.x+15 && p.x >= c.x && p.y <= c.y+15 && p.y >= c.y) {
+			if(p.x <= c.x+15 && p.x >= c.x && p.y <= c.y+15 && p.y >= c.y && cowboys.size() < 25) {
 				cowboys.remove(i--);
 				goodHit = true;
 				parent.currentScore += 1;
@@ -237,17 +243,11 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
         y = p.y;
         repaint();
     }
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public static void clearVector() {
 		cowboys.clear();
 	}
-
+	
 	
 
 	
