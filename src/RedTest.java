@@ -143,6 +143,7 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
         //line-thickness-when-using-java-graphics-for-an-applet-i-dont?lq=1
        
         //draws target around mouse location
+        run(g);
 		g2.setStroke(new BasicStroke(3));
 		g2.drawOval(x-20, y-20, 40, 40);
 		g2.drawLine(x-25, y, x-15, y);
@@ -155,7 +156,7 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
 		Cowboys c = cowboys.get(0);
 		c.drawCowboy(g2);
 		start();*/
-		run(g);
+		
 		
     }
     
@@ -203,7 +204,7 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
         y = p.y;
         for (int i=0; i<cowboys.size(); i++) {
 			Cowboys c = cowboys.get(i);
-			if(p.x <= c.x+15 && p.x >= c.x && p.y <= c.y+15 && p.y >= c.y && cowboys.size() < 25) {
+			if(p.x <= c.x+100 && p.x >= c.x && p.y <= c.y+200 && p.y >= c.y && cowboys.size() < 25) {
 				cowboys.remove(i--);
 				goodHit = true;
 				parent.currentScore += 1;
