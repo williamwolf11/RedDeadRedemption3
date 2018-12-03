@@ -10,6 +10,7 @@ import javax.swing.*;
 
 public class RedTest extends Applet implements ActionListener{
 	static Image img;
+	static Image img2;
     protected CircleCanvas c;
     protected Button restartButton;
     protected Label titleLabel, scoreLabel;
@@ -29,6 +30,7 @@ public class RedTest extends Applet implements ActionListener{
         add("Center", c);
         img = getImage(getDocumentBase(), "images/Marston.png");
         //Found at http://convergence-series.wikia.com/wiki/John_Marston
+        img2 = getImage(getDocumentBase(), "images/CSImage2.png");
         
     }
     
@@ -174,28 +176,18 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
     			if (System.currentTimeMillis()%speed <= 1) {
     			cowboys.add(new Cowboys());
     			if(speed > 500) {
-    				speed-=500;}
+    				speed-=100;}
     			}
     		for (int i=0; i<cowboys.size(); i++) {
     			Cowboys c = cowboys.get(i);
-    			Image img2 = getImage(getDocumentBase(), "images/CSImage2.png");
-    			c.drawCowboy(g, img2);
+    			c.drawCowboy(g, parent.img2);
     			repaint();
     		}
     	}
     	else {
-
     	parent.scoreLabel.setText("Game Over! Score: " + parent.currentScore);
     	}
-
     }
-    	
-    
-
-
-  
-    	
-    
 
 
     // toggles color of circle and repaints
