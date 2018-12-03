@@ -11,6 +11,7 @@ import javax.swing.*;
 public class RedTest extends Applet implements ActionListener{
 	static Image img;
 	static Image img2;
+	static Image img3;
     protected CircleCanvas c;
     protected Button restartButton;
     protected Label titleLabel, scoreLabel;
@@ -24,7 +25,7 @@ public class RedTest extends Applet implements ActionListener{
         setLayout(new BorderLayout());
         add("North", makeTopControlPanel());
         c = new CircleCanvas(this);
-        c.setBackground(Color.yellow);
+        img3 = getImage(getDocumentBase(), "images/background1.jpg");
         c.addMouseListener(c);
         c.addMouseMotionListener(c);
         add("Center", c);
@@ -117,7 +118,7 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
     	cowboys = new Vector<Cowboys>();
     	cowboys.add(new Cowboys());
     }
-    
+
 	//draws the canvas
     public void paint(Graphics g) {
         if (blackOrColor)
@@ -137,6 +138,7 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
         d.height = 600;
         d.width = 1000;
         //puts image of John Marston in the corner
+        g.drawImage(RedTest.img3, 0, 0, null);
         g.drawImage(RedTest.img, 0, 0+(d.height-168), null);
         Graphics2D g2 = (Graphics2D) g;
         //Found this at https://stackoverflow.com/questions/16995308/can-you-increase-
@@ -204,7 +206,7 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
         y = p.y;
         for (int i=0; i<cowboys.size(); i++) {
 			Cowboys c = cowboys.get(i);
-			if(p.x <= c.x+100 && p.x >= c.x && p.y <= c.y+200 && p.y >= c.y && cowboys.size() < 25) {
+			if(p.x <= c.x+57 && p.x >= c.x && p.y <= c.y+95 && p.y >= c.y && cowboys.size() < 25) {
 				cowboys.remove(i--);
 				goodHit = true;
 				parent.currentScore += 1;
