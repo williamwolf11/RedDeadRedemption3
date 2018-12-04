@@ -1,6 +1,8 @@
 
 import java.awt.*;
 
+
+
 public class Cowboys {
     int x;     // position
     int y;
@@ -38,6 +40,8 @@ public class Cowboys {
 
     public void drawCowboy(Graphics g, Image img) {
         // draw the cowboy
-        g.drawImage(img, x, y, null);
+    	int size =  100 * ((y / 600) + (1 / 6));
+    	Image scaledImg = img.getScaledInstance(size, -1, Image.SCALE_SMOOTH);
+        g.drawImage(scaledImg, x, y, null);
     }
 }

@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+
 import javax.swing.*;
 
 @SuppressWarnings({ "serial", "deprecation"})
@@ -101,7 +102,7 @@ public class RedTest extends Applet implements ActionListener{
 
 // a canvas that displays a circle
 class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener  {
-	
+		
 	RedTest parent; //instance variable to be able to access applet components
 	static Vector<Cowboys> cowboys;
     int x; // position of circle
@@ -113,6 +114,7 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
     Thread t;
     int timeBetween = 2000;
     long starttime;
+
 
     
     public CircleCanvas(RedTest s) {
