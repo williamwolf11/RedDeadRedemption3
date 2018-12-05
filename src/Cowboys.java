@@ -6,42 +6,19 @@ import java.awt.*;
 public class Cowboys {
     int x;     // position
     int y;
+    int size; //scaled size of height of image
 
 
 
-    public Cowboys(){ // creates ball with random attributes
-        x = (int)(Math.random()*900);
+    public Cowboys(){ // creates cowboy with random position
+        x = (int)(Math.random()*900) + 50;
         y = (int)(Math.random()*300) + 200;
         }
-    
-
-    /*public boolean move(int width, int height, int pmin, int pmax) {
-        // moves the ball within the box defined by width and height
-        // returns true if ball gets lost
-        // if it hits the top and sides, bounce it back
-        // if it hits the bottom, bounce it only if it is between
-        // pmin and pmax; return true otherwise
-
-        x += dx;
-        if (x-radius <0 || x+radius >= width) {
-            dx = -dx;
-            x += dx;
-        }
-
-        y += dy;
-        if (y+radius >= height && (x+radius < pmin || x-radius > pmax))
-            return true;
-        if (y-radius < 0 || y+radius >= height) {
-            dy = -dy;
-            y += dy;
-        }
-        return false;
-    }*/
 
     public void drawCowboy(Graphics g, Image img) {
         // draw the cowboy
-    	int size =  100 * ((y / 600) + (1 / 6));
-    	Image scaledImg = img.getScaledInstance(size, -1, Image.SCALE_SMOOTH);
-        g.drawImage(scaledImg, x, y, null);
+    	//size =  100 * ((y / 600) + (1 / 6));
+    	//Image scaledImg = img.getScaledInstance(size, -1, Image.SCALE_SMOOTH);
+        g.drawImage(img, x, y, null);
     }
 }

@@ -38,6 +38,13 @@ public class RedTest extends Applet implements ActionListener{
         
     }
     
+    public void start() {
+        c.start();
+    }
+
+    public void stop() {
+        c.stop();
+    }
     
     
     public void actionPerformed(ActionEvent e) {
@@ -101,7 +108,7 @@ public class RedTest extends Applet implements ActionListener{
 @SuppressWarnings("serial")
 
 // a canvas that displays a circle
-class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener  {
+class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMotionListener  {
 		
 	RedTest parent; //instance variable to be able to access applet components
 	static Vector<Cowboys> cowboys;
@@ -111,7 +118,7 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
     boolean goodHit = false; // whether the click was a hit 
     int speed = 3000;
     
-    Thread t;
+    private Thread t = null;
     int timeBetween = 2000;
     long starttime;
 
@@ -149,7 +156,11 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
         //line-thickness-when-using-java-graphics-for-an-applet-i-dont?lq=1
        
         //draws target around mouse location
-        run(g);
+        //run(g);
+        for (int i=0; i<cowboys.size(); i++) {
+    		Cowboys c = cowboys.get(i);
+    		c.drawCowboy(getGraphics(), parent.img2);
+    	}
 		g2.setStroke(new BasicStroke(3));
 		g2.drawOval(x-20, y-20, 40, 40);
 		g2.drawLine(x-25, y, x-15, y);
@@ -157,48 +168,47 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
 		g2.drawLine(x, y-25, x, y-15);
 		g2.drawLine(x, y+25, x, y+15);
 		g.fillOval(x-4, y-4, 8, 8);
-		//cowboys.add(new Cowboys());
-		/*cowboys.add(new Cowboys());
-		Cowboys c = cowboys.get(0);
-		c.drawCowboy(g2);
-		start();*/
+		
 		
 		
     }
     
     public void start() {
-    	t = new Thread();
+    	if (t == null) {
+    	t = new Thread(this);
     	t.start();
-    	starttime = System.currentTimeMillis();
+    	//Found at http://leo.ugr.es/elvira/devel/
+    	//Tutorial/Java/essential/threads/clock.html
+    	}
+    	//starttime = System.currentTimeMillis();
 
     }
 
-    @SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation")
 	public void stop() {
     	t.stop();
 
     }
 
-    public void run(Graphics g){
-
-    	if(cowboys.size() < 15) {
+    public void run(){
+    	Thread currentThread = Thread.currentThread();
+        while (currentThread == t) {
+        	System.out.println("THREAD HAS BEEN ENTERED");
+    	while(cowboys.size() < 15) {
     		if (System.currentTimeMillis()%speed <= 1) {
     			cowboys.add(new Cowboys());
-    		}
-    		if(speed > 500) {
-    			speed-=100;
-    		}
-    		for (int i=0; i<cowboys.size(); i++) {
-    			Cowboys c = cowboys.get(i);
-    			c.drawCowboy(g, parent.img2);
-    			repaint();
-    		}
+    			if(speed > 500) {
+    				speed-=20;
+    			}}
+    		repaint();
     	}
-    	else {
+    	
+    	
     		parent.scoreLabel.setText("Game Over! Score: " + parent.currentScore);
-    	}
+        }
         
     }
+    
     
     /*public void run(Graphics g){
     	if(cowboys.size() < 25) {
@@ -269,6 +279,8 @@ class CircleCanvas extends Canvas implements MouseListener,  MouseMotionListener
 	public static void clearVector() {
 		cowboys.clear();
 	}
+	
+	
 
 	
 	
