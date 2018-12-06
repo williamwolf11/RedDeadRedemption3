@@ -95,10 +95,10 @@ public class RedTest extends Applet implements ActionListener{
     
     // centers circle on canvas and repaints
     public void restart() {
+    	c.newGame();
     	currentScore = 0;
     	scoreLabel.setText("Score: " + currentScore);
-    	c = new CircleCanvas(this);
-    	add("Center", c);
+
     }
 
 }
@@ -116,22 +116,25 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     int y;
     boolean blackOrColor = true; // color of circle (true = black, false = colored)
     boolean goodHit = false; // whether the click was a hit 
-    int speed = 3000;
-    
+    int speed;
     private Thread t = null;
-    int timeBetween = 2000;
     long starttime;
-
 
     
     public CircleCanvas(RedTest s) {
     	parent = s;
+    	newGame();
+    }
+    
+    public void newGame() {
+    	speed = 3000;
     	cowboys = new Vector<Cowboys>();
     	cowboys.add(new Cowboys());
     }
 
 	//draws the canvas
     public void paint(Graphics g) {
+    	
         if (blackOrColor)
             g.setColor(Color.black);
         else {
@@ -159,7 +162,7 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
         //run(g);
         for (int i=0; i<cowboys.size(); i++) {
     		Cowboys c = cowboys.get(i);
-    		c.drawCowboy(getGraphics(), parent.img2);
+    		c.drawCowboy(getGraphics(), RedTest.img2);
     	}
 		g2.setStroke(new BasicStroke(3));
 		g2.drawOval(x-20, y-20, 40, 40);
@@ -169,7 +172,7 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
 		g2.drawLine(x, y+25, x, y+15);
 		g.fillOval(x-4, y-4, 8, 8);
 		
-		
+		g.drawImage(RedTest.img2, 0, 0, 200, 200*2, null);
 		
     }
     
@@ -177,10 +180,7 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     	if (t == null) {
     	t = new Thread(this);
     	t.start();
-    	//Found at http://leo.ugr.es/elvira/devel/
-    	//Tutorial/Java/essential/threads/clock.html
     	}
-    	//starttime = System.currentTimeMillis();
 
     }
 
@@ -193,7 +193,7 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     public void run(){
     	Thread currentThread = Thread.currentThread();
         while (currentThread == t) {
-        	System.out.println("THREAD HAS BEEN ENTERED");
+
     	while(cowboys.size() < 15) {
     		if (System.currentTimeMillis()%speed <= 1) {
     			cowboys.add(new Cowboys());
@@ -209,26 +209,6 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
         
     }
     
-    
-    /*public void run(Graphics g){
-    	if(cowboys.size() < 25) {
-    			if (((System.currentTimeMillis()-starttime)/1000)%10 == 0 ) {
-    			cowboys.add(new Cowboys());
-    			/*if(speed > 500) {
-    				speed-=100;}
-    			}
-    		for (int i=0; i<cowboys.size(); i++) {
-    			Cowboys c = cowboys.get(i);
-    			c.drawCowboy(g, parent.img2);
-    			repaint();
-    		}
-    	}
-    	else {
-    	parent.scoreLabel.setText("Game Over! Score: " + parent.currentScore);
-    	}
-    }*/
-
-
     // toggles color of circle and repaints
     public void toggleColor() {
         blackOrColor = ! blackOrColor;
@@ -280,12 +260,6 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
 		cowboys.clear();
 	}
 	
-	
-
-	
-	
-	
-
 	
 	}
 	
