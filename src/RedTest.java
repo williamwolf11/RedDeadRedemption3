@@ -7,9 +7,7 @@ import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-// import java.util.concurrent.TimeUnit;
-// import javax.swing.*;
-// ^ delete these??
+
 
 @SuppressWarnings({ "serial", "deprecation"})
 // and delete "deprecation"
@@ -126,6 +124,10 @@ class RedDeadCanvas extends Canvas implements Runnable, MouseListener,  MouseMot
     int speed;
     private Thread t = null;
     long starttime;
+    int mainCharPos = 432;
+    int targetRadius = 20;
+    int centerDotRad = 4;
+    //constant int cowboysPosition = 500;
 
     
     public RedDeadCanvas(RedTest s) {
@@ -152,14 +154,10 @@ class RedDeadCanvas extends Canvas implements Runnable, MouseListener,  MouseMot
         		g.setColor(Color.lightGray);
         	} 
         }
-        //sets size of game area
-        Dimension d = getSize();
-        d.height = 600;
-        d.width = 1000;
         
         g.drawImage(RedTest.backgroundImg, 0, 0, null);
         //puts image of John Marston in the corner
-        g.drawImage(RedTest.mainCharImg, 0, 0+(d.height-168), null);
+        g.drawImage(RedTest.mainCharImg, 0, mainCharPos, null);
         
         Graphics2D g2 = (Graphics2D) g;
         //Found this at https://stackoverflow.com/questions/16995308/can-you-increase-
@@ -172,12 +170,12 @@ class RedDeadCanvas extends Canvas implements Runnable, MouseListener,  MouseMot
     		c.drawCowboy(getGraphics(), RedTest.cowboyImg);
     	}
 		g2.setStroke(new BasicStroke(3));
-		g2.drawOval(x-20, y-20, 40, 40);
+		g2.drawOval(x-targetRadius, y-targetRadius, 2*targetRadius, 2*targetRadius);
 		g2.drawLine(x-25, y, x-15, y);
 		g2.drawLine(x+25, y, x+15, y);
 		g2.drawLine(x, y-25, x, y-15);
 		g2.drawLine(x, y+25, x, y+15);
-		g.fillOval(x-4, y-4, 8, 8);
+		g.fillOval(x-centerDotRad, y-centerDotRad, 2*centerDotRad, 2*centerDotRad);
     }
     
     
@@ -225,7 +223,7 @@ class RedDeadCanvas extends Canvas implements Runnable, MouseListener,  MouseMot
 
         for (int i=0; i<cowboys.size(); i++) {
 			Cowboys c = cowboys.get(i);
-			if(p.x <= c.x+57 && p.x >= c.x+20 && p.y <= c.y+95 && p.y >= c.y+10 && cowboys.size() < 25) {
+			if(p.x <= c.x+57 && p.x >= c.x+20 && p.y <= c.y+95 && p.y >= c.y+10 && cowboys.size() < 15) {
 				cowboys.remove(i--);
 				goodHit = true;
 				parent.currentScore += 1;
