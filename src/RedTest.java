@@ -1,21 +1,27 @@
-//Title and shit
+// Red Dead Redemption 3
+// Names: Sophie Smith and William Wolf
+// CSCI0201 Final Project
+// Dec 7, 2018
 
 import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
-
-
-import javax.swing.*;
+// import java.util.concurrent.TimeUnit;
+// import javax.swing.*;
+// ^ delete these??
 
 @SuppressWarnings({ "serial", "deprecation"})
+// and delete "deprecation"
 
 public class RedTest extends Applet implements ActionListener{
-	static Image img;
-	static Image img2;
-	static Image img3;
-    protected CircleCanvas c;
+	
+	// images for the game
+	static Image mainCharImg;
+	static Image cowboyImg;
+	static Image backgroundImg;
+	
+    protected RedDeadCanvas c;
     protected Button restartButton;
     protected Label titleLabel, scoreLabel;
     protected int currentScore;
@@ -24,18 +30,19 @@ public class RedTest extends Applet implements ActionListener{
     static final Color dgreen = new Color(0, 120, 90);
     
     public void init () {
-    	currentScore = 0;
         setLayout(new BorderLayout());
         add("North", makeTopControlPanel());
-        c = new CircleCanvas(this);
-        img3 = getImage(getDocumentBase(), "images/background1.jpg");
+        c = new RedDeadCanvas(this);
         c.addMouseListener(c);
         c.addMouseMotionListener(c);
         add("Center", c);
-        img = getImage(getDocumentBase(), "images/Marston.png");
-        //Found at http://convergence-series.wikia.com/wiki/John_Marston
-        img2 = getImage(getDocumentBase(), "images/CSImage3.png");
         
+        backgroundImg = getImage(getDocumentBase(), "images/background1.jpg");
+        mainCharImg = getImage(getDocumentBase(), "images/Marston.png");
+        //Found at http://convergence-series.wikia.com/wiki/John_Marston
+        cowboyImg = getImage(getDocumentBase(), "images/CSImage3.png");
+        
+        currentScore = 0;    
     }
     
     public void start() {
@@ -48,8 +55,9 @@ public class RedTest extends Applet implements ActionListener{
     
     
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == restartButton)
+        if (e.getSource() == restartButton) {
            restart();
+        }
     }
     
     public Panel makeTopControlPanel() {
@@ -98,7 +106,6 @@ public class RedTest extends Applet implements ActionListener{
     	c.newGame();
     	currentScore = 0;
     	scoreLabel.setText("Score: " + currentScore);
-
     }
 
 }
@@ -108,11 +115,11 @@ public class RedTest extends Applet implements ActionListener{
 @SuppressWarnings("serial")
 
 // a canvas that displays a circle
-class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMotionListener  {
+class RedDeadCanvas extends Canvas implements Runnable, MouseListener,  MouseMotionListener  {
 		
 	RedTest parent; //instance variable to be able to access applet components
 	static Vector<Cowboys> cowboys;
-    int x; // position of circle
+    int x; // position of target
     int y;
     boolean blackOrColor = true; // color of circle (true = black, false = colored)
     boolean goodHit = false; // whether the click was a hit 
@@ -121,7 +128,7 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     long starttime;
 
     
-    public CircleCanvas(RedTest s) {
+    public RedDeadCanvas(RedTest s) {
     	parent = s;
     	newGame();
     }
@@ -134,16 +141,14 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
 
 	//draws the canvas
     public void paint(Graphics g) {
-    	
-        if (blackOrColor)
+        if (blackOrColor) {
             g.setColor(Color.black);
-        else {
+        } else {
         	// dot appears red if hits target
         	if (goodHit) {
         		g.setColor(Color.red);
-        	}
+        	} else {
         	// dot appears gray if does not hit target
-        	else {
         		g.setColor(Color.lightGray);
         	} 
         }
@@ -151,9 +156,11 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
         Dimension d = getSize();
         d.height = 600;
         d.width = 1000;
+        
+        g.drawImage(RedTest.backgroundImg, 0, 0, null);
         //puts image of John Marston in the corner
-        g.drawImage(RedTest.img3, 0, 0, null);
-        g.drawImage(RedTest.img, 0, 0+(d.height-168), null);
+        g.drawImage(RedTest.mainCharImg, 0, 0+(d.height-168), null);
+        
         Graphics2D g2 = (Graphics2D) g;
         //Found this at https://stackoverflow.com/questions/16995308/can-you-increase-
         //line-thickness-when-using-java-graphics-for-an-applet-i-dont?lq=1
@@ -162,7 +169,7 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
         //run(g);
         for (int i=0; i<cowboys.size(); i++) {
     		Cowboys c = cowboys.get(i);
-    		c.drawCowboy(getGraphics(), RedTest.img2);
+    		c.drawCowboy(getGraphics(), RedTest.cowboyImg);
     	}
 		g2.setStroke(new BasicStroke(3));
 		g2.drawOval(x-20, y-20, 40, 40);
@@ -171,17 +178,14 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
 		g2.drawLine(x, y-25, x, y-15);
 		g2.drawLine(x, y+25, x, y+15);
 		g.fillOval(x-4, y-4, 8, 8);
-		
-		//g.drawImage(RedTest.img2, 0, 0, 200, 200*2, null);
-		
     }
+    
     
     public void start() {
     	if (t == null) {
-    	t = new Thread(this);
-    	t.start();
+    		t = new Thread(this);
+    		t.start();
     	}
-
     }
 
 	@SuppressWarnings("deprecation")
@@ -193,17 +197,15 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
     public void run(){
     	Thread currentThread = Thread.currentThread();
         while (currentThread == t) {
-
-    	while(cowboys.size() < 15) {
-    		if (System.currentTimeMillis()%speed <= 1) {
-    			cowboys.add(new Cowboys());
-    			if(speed > 500) {
-    				speed-=20;
-    			}}
-    		repaint();
-    	}
-    	
-    	
+        	while(cowboys.size() < 15) {
+        		if (System.currentTimeMillis()%speed <= 1) {
+        			cowboys.add(new Cowboys());
+        			if(speed > 500) {
+        				speed-=20;
+        			}
+        		}
+        		repaint();
+        	}
     		parent.scoreLabel.setText("Game Over! Score: " + parent.currentScore);
         }
         
@@ -220,25 +222,27 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
         Point p = event.getPoint();
         x = p.x;
         y = p.y;
+
         for (int i=0; i<cowboys.size(); i++) {
 			Cowboys c = cowboys.get(i);
-			if(p.x <= c.x+57 && p.x >= c.x && p.y <= c.y+95 && p.y >= c.y && cowboys.size() < 25) {
+			if(p.x <= c.x+57 && p.x >= c.x+20 && p.y <= c.y+95 && p.y >= c.y+10 && cowboys.size() < 25) {
 				cowboys.remove(i--);
 				goodHit = true;
 				parent.currentScore += 1;
 				parent.scoreLabel.setText("Score: " + parent.currentScore);
 			}
-			repaint();}
+			repaint();
+		}
         toggleColor();
         repaint(); // redraws canvas (yellow) and draws circle
     }
-
+    
+    // when mouse is released, target turns back to black
     public void mouseReleased(MouseEvent event) {
     	goodHit = false;
     	toggleColor();
     }
     
-    // need these also because we implement a MouseListener
     public void mouseClicked(MouseEvent event) { }
     
     public void mouseEntered(MouseEvent event) { }
@@ -247,9 +251,9 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
 
     public void mouseDragged(MouseEvent event)  { }
     
-    // need this also because we implement a MouseMotionListener
+
     public void mouseMoved(MouseEvent event) {
-    	// now the circle follows the cursor around
+    	// target follows cursor around
     	Point p = event.getPoint();
         x = p.x;
         y = p.y;
@@ -261,5 +265,5 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
 	}
 	
 	
-	}
+}
 	
