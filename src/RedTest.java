@@ -172,7 +172,7 @@ class CircleCanvas extends Canvas implements Runnable, MouseListener,  MouseMoti
 		g2.drawLine(x, y+25, x, y+15);
 		g.fillOval(x-4, y-4, 8, 8);
 		
-		g.drawImage(RedTest.img2, 0, 0, 200, 200*2, null);
+		//g.drawImage(RedTest.img2, 0, 0, 200, 200*2, null);
 		
     }
     
